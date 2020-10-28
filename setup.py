@@ -695,7 +695,15 @@ def determine_gl_flags():
         c_options['use_x11'] = True
         c_options['use_egl'] = True
     else:
-        flags['libraries'] = ['GL']
+        if cross_sysroot:
+            flags['include_dirs'] = [cross_sysroot + '/usr/include']
+            flags['library_dirs'] = [cross_sysroot + '/usr/lib']
+
+        if c_options['use_opengl_es2']:
+            flags['libraries'] = ['GLESv2']
+        else:
+            flags['libraries'] = ['GL']
+
     return flags, base_flags
 
 
